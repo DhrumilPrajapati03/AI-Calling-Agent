@@ -17,3 +17,6 @@ myenv/
 # IDE/Editor
 .vscode/
 .idea/
+
+# Data
+S3-Bucket-Extraction
