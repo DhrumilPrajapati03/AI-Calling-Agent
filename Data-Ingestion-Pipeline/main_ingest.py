@@ -13,6 +13,10 @@ COLLECTION_NAME = "transcripts_kb"
 raw_data = load_transcripts(BASE_DIR)
 print(f"Loaded {len(raw_data)} transcripts")
 
+if not raw_data:
+    print("No transcripts found. Please check the path and ensure there are .txt files in the directory.")
+    exit(1)
+
 # Clean transcripts
 for doc in raw_data:
     doc["clean_text"] = clean_text(doc["text"])
@@ -28,6 +32,10 @@ for doc in raw_data:
             "metadata": {"source": doc["file"], "chunk_id": i},
         })
 print(f"Generated {len(docs)} chunks from transcripts")
+
+if not docs:
+    print("No chunks generated from transcripts. Exiting.")
+    exit(1)
 
 # Embedding & Vector DB
 vector_db = VectorDB(
@@ -47,4 +55,4 @@ results = vector_db.similarity_search(query, k=5)
 for r in results:
     print("----")
     print("Source:", r.metadata["source"])
-    print(r.page_content[:300])
+    print(r.page_content[:])
